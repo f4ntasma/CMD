@@ -64,6 +64,87 @@ app.use((req, res, next) => {
   req.pipe(upstream);
 });
 
+/** Dominio público del sitio, para las URL absolutas del mapa del sitio. */
+const SITE_URL = (process.env['SITE_URL'] ?? 'https://coffemokeydevs.site').replace(/\/$/, '');
+const SITEMAP_TTL_MS = 60 * 60 * 1000;
+let sitemapCache: { xml: string; at: number } | null = null;
+
+const escapeXml = (value: string) =>
+  value.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+
+async function getJson<T>(path: string): Promise<T | null> {
+  try {
+    const response = await fetch(new URL(path, API_URL), { signal: AbortSignal.timeout(8000) });
+    return response.ok ? ((await response.json()) as T) : null;
+  } catch {
+    return null;
+  }
+}
+
+/** Recorre todas las páginas de un listado paginado del backend (máximo 50 páginas por seguridad). */
+async function allPages<T>(path: (page: number) => string): Promise<T[]> {
+  const items: T[] = [];
+  for (let page = 0; page < 50; page++) {
+    const data = await getJson<{ content: T[]; totalPages: number }>(path(page));
+    if (!data) break;
+    items.push(...data.content);
+    if (page + 1 >= data.totalPages) break;
+  }
+  return items;
+}
+
+/** Mapa del sitio para buscadores: páginas públicas fijas más cada curso, ruta y publicación. */
+async function buildSitemap(): Promise<string> {
+  const [courses, paths, posts] = await Promise.all([
+    allPages<{ slug: string }>((page) => `/api/courses?page=${page}`),
+    getJson<{ slug: string }[]>('/api/paths').then((list) => list ?? []),
+    allPages<{ slug: string; publishedAt: string }>((page) => `/api/posts?page=${page}&size=30`),
+  ]);
+  const urls: { loc: string; lastmod?: string; priority: string }[] = [
+    { loc: '/', priority: '1.0' },
+    { loc: '/cursos', priority: '0.9' },
+    { loc: '/rutas', priority: '0.8' },
+    { loc: '/blog', priority: '0.6' },
+    { loc: '/noticias', priority: '0.5' },
+    ...courses.map((course) => ({ loc: `/cursos/${course.slug}`, priority: '0.8' })),
+    ...paths.map((path) => ({ loc: `/rutas/${path.slug}`, priority: '0.7' })),
+    ...posts.map((post) => ({ loc: `/publicaciones/${post.slug}`, lastmod: post.publishedAt?.slice(0, 10), priority: '0.5' })),
+  ];
+  const body = urls
+    .map(
+      (url) =>
+        `  <url><loc>${escapeXml(SITE_URL + url.loc)}</loc>${url.lastmod ? `<lastmod>${url.lastmod}</lastmod>` : ''}<priority>${url.priority}</priority></url>`,
+    )
+    .join('\n');
+  return `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n${body}\n</urlset>\n`;
+}
+
+app.get('/sitemap.xml', async (_req, res) => {
+  if (!sitemapCache || Date.now() - sitemapCache.at > SITEMAP_TTL_MS) {
+    sitemapCache = { xml: await buildSitemap(), at: Date.now() };
+  }
+  res.type('application/xml').set('Cache-Control', 'public, max-age=3600').send(sitemapCache.xml);
+});
+
+app.get('/robots.txt', (_req, res) => {
+  res
+    .type('text/plain')
+    .send(
+      [
+        'User-agent: *',
+        'Allow: /',
+        'Disallow: /admin',
+        'Disallow: /api/',
+        'Disallow: /mi-aprendizaje',
+        'Disallow: /perfil',
+        'Disallow: /ingresar',
+        '',
+        `Sitemap: ${SITE_URL}/sitemap.xml`,
+        '',
+      ].join('\n'),
+    );
+});
+
 /**
  * Serve static files from /browser
  */

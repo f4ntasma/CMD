@@ -2,21 +2,22 @@ import { ChangeDetectionStrategy, Component, inject, signal } from '@angular/cor
 import { Router, RouterLink, RouterLinkActive } from '@angular/router';
 import { Auth } from '../core/auth';
 import { Toasts } from '../core/toasts';
+import { Icon } from '../shared/icon';
 
 @Component({
   selector: 'app-header',
-  imports: [RouterLink, RouterLinkActive],
+  imports: [RouterLink, RouterLinkActive, Icon],
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
     <header class="bar">
       <div class="container inner">
         <a class="brand" routerLink="/" (click)="open.set(false)">
-          <img src="/mascot/spriteCool.png" alt="" width="40" height="40" />
+          <span class="logo"><img src="/mascot/spriteCool.webp" alt="" width="944" height="950" /></span>
           <span>Monkey Coffe <strong>Dev's</strong></span>
         </a>
 
         <button class="toggle" type="button" (click)="open.set(!open())" [attr.aria-expanded]="open()"
-                aria-label="Abrir menú">☰</button>
+                aria-label="Abrir menú"><app-icon [name]="open() ? 'x' : 'menu'" [size]="22" /></button>
 
         <nav class="links" [class.open]="open()" (click)="open.set(false)">
           <a routerLink="/cursos" routerLinkActive="active">Cursos</a>
@@ -51,7 +52,7 @@ import { Toasts } from '../core/toasts';
       position: sticky;
       top: 0;
       z-index: 20;
-      background: rgb(13 15 21 / 82%);
+      background: rgb(0 0 0 / 80%);
       backdrop-filter: blur(12px);
       border-bottom: 1px solid var(--line);
     }
@@ -66,9 +67,26 @@ import { Toasts } from '../core/toasts';
       align-items: center;
       gap: 0.6rem;
       color: var(--text);
-      font-weight: 600;
-      font-size: 1.05rem;
+      font-family: var(--display);
+      font-weight: 800;
+      font-size: 1.15rem;
+      letter-spacing: -0.01em;
       white-space: nowrap;
+    }
+    .logo {
+      width: 42px;
+      height: 42px;
+      border-radius: 13px;
+      overflow: hidden;
+      background: #05080d;
+      border: 1px solid rgb(41 182 255 / 45%);
+      box-shadow: 0 0 16px rgb(41 182 255 / 25%);
+      display: grid;
+      place-items: center;
+    }
+    .logo img {
+      width: 52px;
+      margin-top: 12px;
     }
     .brand strong {
       color: var(--brand-strong);
@@ -117,13 +135,15 @@ import { Toasts } from '../core/toasts';
       border: 1px solid var(--line);
       border-radius: var(--radius-sm);
       color: var(--text);
-      font-size: 1.2rem;
-      padding: 0.25rem 0.65rem;
+      width: 44px;
+      height: 44px;
+      display: none;
+      place-items: center;
       cursor: pointer;
     }
     @media (max-width: 900px) {
       .toggle {
-        display: block;
+        display: grid;
       }
       .links {
         display: none;

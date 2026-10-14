@@ -263,7 +263,7 @@ interface QuizDraft {
     .sub {
       padding: 1rem;
       border-radius: var(--radius-sm);
-      background: #10131b;
+      background: #07090d;
       border: 1px dashed var(--line);
     }
     .question {

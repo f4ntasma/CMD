@@ -1,8 +1,10 @@
-import { ChangeDetectionStrategy, Component, inject, input } from '@angular/core';
+import { ChangeDetectionStrategy, Component, effect, inject, input } from '@angular/core';
+import { Title } from '@angular/platform-browser';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { RouterLink } from '@angular/router';
 import { catchError, of } from 'rxjs';
 import { CatalogApi } from '../core/api';
+import { SITE_URL, Seo } from '../core/seo';
 import { CourseCardComponent } from '../shared/course-card';
 import { loader } from '../shared/loader';
 
@@ -27,7 +29,7 @@ import { loader } from '../shared/loader';
           </a>
         } @empty {
           <div class="empty">
-            <img src="/mascot/spriteHaveIdea.png" alt="" />
+            <img src="/mascot/spriteHaveIdea.webp" alt="" />
             <p>Estamos preparando las primeras rutas. Mientras tanto, <a routerLink="/cursos">explora los cursos</a>.</p>
           </div>
         }
@@ -81,7 +83,7 @@ export class Paths {
         </ol>
       } @else if (!path.loading()) {
         <div class="empty">
-          <img src="/mascot/spriteThink.png" alt="" />
+          <img src="/mascot/spriteThink.webp" alt="" />
           <h2>No encontramos esa ruta</h2>
           <a class="btn" routerLink="/rutas">Ver las rutas</a>
         </div>
@@ -124,4 +126,31 @@ export class PathDetailPage {
   private readonly api = inject(CatalogApi);
   readonly slug = input.required<string>();
   protected readonly path = loader(this.slug, (slug) => this.api.path(slug));
+
+  constructor() {
+    const title = inject(Title);
+    const seo = inject(Seo);
+    effect(() => {
+      const data = this.path.value();
+      if (data) {
+        const pageTitle = `Ruta: ${data.title} · Monkey Coffe Dev's`;
+        title.setTitle(pageTitle);
+        seo.update({
+          title: pageTitle,
+          description: data.description,
+          jsonLd: {
+            '@type': 'ItemList',
+            name: data.title,
+            description: data.description,
+            itemListElement: data.courses.map((course, index) => ({
+              '@type': 'ListItem',
+              position: index + 1,
+              url: `${SITE_URL}/cursos/${course.slug}`,
+              name: course.title,
+            })),
+          },
+        });
+      }
+    });
+  }
 }

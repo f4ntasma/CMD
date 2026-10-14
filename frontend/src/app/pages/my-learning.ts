@@ -22,7 +22,7 @@ import { PricePipe, ShortDatePipe } from '../shared/format';
       @if (courses(); as list) {
         @if (list.length === 0) {
           <div class="empty card">
-            <img src="/mascot/spriteHaveIdea.png" alt="" />
+            <img src="/mascot/spriteHaveIdea.webp" alt="" />
             <p>Aún no te has inscrito en ningún curso.</p>
             <a class="btn" routerLink="/cursos">Explorar cursos</a>
           </div>

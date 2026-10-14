@@ -55,7 +55,7 @@ import { loader } from '../shared/loader';
       } @else if (courses.value(); as page) {
         @if (page.content.length === 0) {
           <div class="empty">
-            <img src="/mascot/spriteThink.png" alt="" />
+            <img src="/mascot/spriteThink.webp" alt="" />
             <p>No hay cursos con esos filtros todavía.</p>
             <a class="btn ghost small" routerLink="/cursos">Quitar filtros</a>
           </div>

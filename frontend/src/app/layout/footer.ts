@@ -10,7 +10,7 @@ import { Site } from '../core/site';
     <footer>
       <div class="container cols">
         <div>
-          <strong class="name">Monkey Coffe Dev's</strong>
+          <strong class="name">Monkey Coffe <span>Dev's</span></strong>
           <p class="muted">Academia de programación, bases de datos, ciberseguridad e IA. Código, café y comunidad.</p>
         </div>
         <nav>
@@ -36,7 +36,7 @@ import { Site } from '../core/site';
     footer {
       margin-top: 4rem;
       border-top: 1px solid var(--line);
-      background: rgb(13 15 21 / 70%);
+      background: #05070a;
       padding: 2.5rem 0 1.5rem;
     }
     .cols {
@@ -45,7 +45,11 @@ import { Site } from '../core/site';
       grid-template-columns: 2fr 1fr 1fr;
     }
     .name {
-      font-size: 1.15rem;
+      font-family: var(--display);
+      font-size: 1.3rem;
+    }
+    .name span {
+      color: var(--brand-strong);
     }
     p {
       max-width: 38ch;
@@ -66,7 +70,7 @@ import { Site } from '../core/site';
       font-size: 0.72rem;
       letter-spacing: 0.12em;
       text-transform: uppercase;
-      color: var(--brand-strong);
+      color: var(--neon);
       margin-bottom: 0.3rem;
     }
     .legal {

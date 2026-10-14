@@ -5,6 +5,7 @@ import { Router, RouterLink } from '@angular/router';
 import { CatalogApi, LearningApi } from '../core/api';
 import { Auth } from '../core/auth';
 import { CourseDetail, LEVEL_LABELS, ViewerState } from '../core/models';
+import { SITE_NAME, SITE_URL, Seo } from '../core/seo';
 import { Toasts } from '../core/toasts';
 import { DurationPipe, PricePipe } from '../shared/format';
 import { loader } from '../shared/loader';
@@ -106,7 +107,7 @@ import { loader } from '../shared/loader';
       </div>
     } @else {
       <div class="container empty">
-        <img src="/mascot/spriteThink.png" alt="" />
+        <img src="/mascot/spriteThink.webp" alt="" />
         <h2>No encontramos ese curso</h2>
         <a class="btn" routerLink="/cursos">Ver el catálogo</a>
       </div>
@@ -212,6 +213,7 @@ export class CourseDetailPage {
   private readonly router = inject(Router);
   private readonly toasts = inject(Toasts);
   private readonly title = inject(Title);
+  private readonly seo = inject(Seo);
   private readonly isBrowser = isPlatformBrowser(inject(PLATFORM_ID));
 
   readonly slug = input.required<string>();
@@ -232,7 +234,33 @@ export class CourseDetailPage {
     effect(() => {
       const data = this.detail.value();
       if (data) {
-        this.title.setTitle(`${data.course.title} · Monkey Coffe Dev's`);
+        const course = data.course;
+        const title = `Curso de ${course.title} · Monkey Coffe Dev's`;
+        this.title.setTitle(title);
+        this.seo.update({
+          title,
+          description: course.summary,
+          image: course.coverUrl,
+          jsonLd: {
+            '@type': 'Course',
+            name: course.title,
+            description: course.summary,
+            url: `${SITE_URL}/cursos/${course.slug}`,
+            image: course.coverUrl ?? undefined,
+            inLanguage: 'es',
+            educationalLevel: LEVEL_LABELS[course.level],
+            about: course.category.name,
+            provider: { '@type': 'EducationalOrganization', name: SITE_NAME, sameAs: SITE_URL },
+            offers: {
+              '@type': 'Offer',
+              category: course.free ? 'Free' : 'Paid',
+              price: course.free ? 0 : course.price,
+              priceCurrency: course.currency,
+              url: `${SITE_URL}/cursos/${course.slug}`,
+            },
+            hasCourseInstance: { '@type': 'CourseInstance', courseMode: 'Online', inLanguage: 'es' },
+          },
+        });
       }
     });
     // El progreso depende de la sesión: se pide solo en el navegador y cuando se sabe quién es el usuario.

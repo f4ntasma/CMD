@@ -32,7 +32,7 @@ import { loader } from '../shared/loader';
 
           @if (order(); as placed) {
             <div class="card stack done">
-              <img src="/mascot/spriteLaugh.png" alt="" width="120" height="120" />
+              <img src="/mascot/spriteLaugh.webp" alt="" width="120" height="120" />
               <h2>¡Pago registrado!</h2>
               <p>
                 Recibimos tu operación <strong class="mono">{{ placed.paymentReference }}</strong>. La revisaremos y

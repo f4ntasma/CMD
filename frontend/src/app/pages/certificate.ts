@@ -13,7 +13,7 @@ import { loader } from '../shared/loader';
     <div class="container section">
       @if (certificate.value(); as data) {
         <div class="panel sheet">
-          <img src="/mascot/spriteCool.png" alt="" width="130" height="130" />
+          <img src="/mascot/spriteCool.webp" alt="" width="130" height="130" />
           <span class="badge ok">✓ Certificado válido</span>
           <span class="eyebrow">Monkey Coffe Dev's certifica que</span>
           <h1>{{ data.studentName }}</h1>
@@ -24,7 +24,7 @@ import { loader } from '../shared/loader';
         </div>
       } @else if (!certificate.loading()) {
         <div class="empty">
-          <img src="/mascot/spriteThink.png" alt="" />
+          <img src="/mascot/spriteThink.webp" alt="" />
           <h2>Certificado no encontrado</h2>
           <p>El código <strong class="mono">{{ code() }}</strong> no corresponde a ningún certificado emitido.</p>
         </div>

@@ -1,29 +1,35 @@
 /* Sistema de diseño de Monkey Coffe Dev's. Los componentes usan estas clases y variables;
    sus estilos propios se limitan a lo que solo ellos necesitan. */
-@import '@fontsource-variable/space-grotesk';
+@import '@fontsource-variable/bricolage-grotesque';
+@import '@fontsource-variable/manrope';
 @import '@fontsource-variable/jetbrains-mono';
 
 :root {
-  /* Colores de la mascota: rojo anaranjado, azul y el crema de la taza. */
-  --brand: #f04e23;
-  --brand-strong: #ff6a3d;
-  --blue: #3d63dd;
-  --blue-soft: #7d9bff;
+  /* Colores de la mascota (rojo del pelaje, cobalto de la cara, durazno de la piel)
+     sobre negro, con azul neón para los acentos tecnológicos. */
+  --brand: #cf3517; /* fondo de botones: 5:1 con texto blanco */
+  --brand-strong: #ff6b47; /* rojo para texto y acentos sobre negro */
+  --blue: #2c4fc4;
+  --blue-soft: #7dd3ff;
+  --neon: #29b6ff;
+  --neon-glow: rgb(41 182 255 / 35%);
+  --peach: #f4a26b;
   --gold: #ffc857;
   --ok: #3ecf8e;
   --danger: #ff6b6b;
 
-  --bg: #0d0f15;
-  --surface: #161922;
-  --surface-2: #1e222e;
-  --line: #2a3041;
-  --text: #eef1f7;
+  --bg: #000;
+  --surface: #0b0e14;
+  --surface-2: #12161f;
+  --line: #1d2330;
+  --text: #f3f5fa;
   --muted: #9aa4b8;
 
-  --radius: 14px;
-  --radius-sm: 9px;
-  --shadow: 0 18px 40px -22px rgb(0 0 0 / 80%);
-  --font: 'Space Grotesk Variable', system-ui, -apple-system, 'Segoe UI', sans-serif;
+  --radius: 18px;
+  --radius-sm: 11px;
+  --shadow: 0 18px 40px -22px rgb(0 0 0 / 90%);
+  --font: 'Manrope Variable', system-ui, -apple-system, 'Segoe UI', sans-serif;
+  --display: 'Bricolage Grotesque Variable', 'Manrope Variable', system-ui, sans-serif;
   --mono: 'JetBrains Mono Variable', ui-monospace, 'Cascadia Code', monospace;
   --page: 1180px;
 }
@@ -40,10 +46,7 @@ html {
 
 body {
   margin: 0;
-  background:
-    radial-gradient(900px 500px at 85% -10%, rgb(61 99 221 / 18%), transparent 60%),
-    radial-gradient(700px 420px at 0% 0%, rgb(240 78 35 / 14%), transparent 60%), var(--bg);
-  background-attachment: fixed;
+  background: var(--bg);
   color: var(--text);
   font: 16px/1.6 var(--font);
   -webkit-font-smoothing: antialiased;
@@ -54,14 +57,16 @@ h2,
 h3,
 h4 {
   margin: 0 0 0.5em;
-  line-height: 1.15;
-  letter-spacing: -0.02em;
+  font-family: var(--display);
+  font-weight: 800;
+  line-height: 1.1;
+  letter-spacing: -0.025em;
 }
 h1 {
-  font-size: clamp(2rem, 4.2vw, 3.3rem);
+  font-size: clamp(2.2rem, 4.6vw, 3.6rem);
 }
 h2 {
-  font-size: clamp(1.5rem, 2.6vw, 2.1rem);
+  font-size: clamp(1.7rem, 3vw, 2.6rem);
 }
 h3 {
   font-size: 1.2rem;
@@ -74,13 +79,14 @@ a {
   text-decoration: none;
 }
 a:hover {
-  color: #a9bcff;
+  color: #b6e6ff;
 }
 img {
   max-width: 100%;
+  height: auto;
 }
 :focus-visible {
-  outline: 2px solid var(--gold);
+  outline: 2px solid var(--neon);
   outline-offset: 2px;
   border-radius: 4px;
 }
@@ -126,7 +132,7 @@ img {
   font: 600 0.78rem/1 var(--mono);
   letter-spacing: 0.12em;
   text-transform: uppercase;
-  color: var(--brand-strong);
+  color: var(--neon);
   margin-bottom: 0.9rem;
   display: block;
 }
@@ -177,13 +183,13 @@ img {
 }
 .card.hover:hover {
   transform: translateY(-3px);
-  border-color: #3b4460;
-  box-shadow: var(--shadow);
+  border-color: rgb(41 182 255 / 55%);
+  box-shadow: 0 0 0 1px rgb(41 182 255 / 20%), 0 18px 44px -18px var(--neon-glow);
 }
 .panel {
-  background: linear-gradient(135deg, rgb(240 78 35 / 12%), rgb(61 99 221 / 14%));
+  background: var(--surface);
   border: 1px solid var(--line);
-  border-radius: calc(var(--radius) + 6px);
+  border-radius: calc(var(--radius) + 8px);
   padding: clamp(1.5rem, 4vw, 2.75rem);
 }
 
@@ -195,10 +201,10 @@ img {
   gap: 0.5rem;
   padding: 0.7rem 1.25rem;
   border: 1px solid transparent;
-  border-radius: 999px;
+  border-radius: 12px;
   background: var(--brand);
   color: #fff;
-  font: 600 0.95rem var(--font);
+  font: 800 0.95rem var(--font);
   cursor: pointer;
   transition:
     background 0.15s ease,
@@ -206,7 +212,7 @@ img {
     border-color 0.15s ease;
 }
 .btn:hover {
-  background: var(--brand-strong);
+  background: #e0401f;
   color: #fff;
   transform: translateY(-1px);
 }
@@ -215,11 +221,15 @@ img {
   cursor: not-allowed;
   transform: none;
 }
+/* Azul neón: acciones de comunidad y tecnología. Texto oscuro para mantener contraste. */
 .btn.blue {
-  background: var(--blue);
+  background: var(--neon);
+  color: #001018;
 }
 .btn.blue:hover {
-  background: #4f74ea;
+  background: #5ac8ff;
+  color: #001018;
+  box-shadow: 0 0 24px var(--neon-glow);
 }
 .btn.ghost {
   background: transparent;
@@ -254,7 +264,7 @@ img {
   cursor: pointer;
 }
 .link-btn:hover {
-  color: #a9bcff;
+  color: #b6e6ff;
 }
 
 /* ------------------------------------------------------------ Etiquetas */
@@ -317,7 +327,7 @@ textarea {
   padding: 0.65rem 0.8rem;
   border: 1px solid var(--line);
   border-radius: var(--radius-sm);
-  background: #10131b;
+  background: #07090d;
   color: var(--text);
   font: inherit;
 }
@@ -331,8 +341,8 @@ input:focus,
 select:focus,
 textarea:focus {
   outline: none;
-  border-color: var(--blue);
-  box-shadow: 0 0 0 3px rgb(61 99 221 / 25%);
+  border-color: var(--neon);
+  box-shadow: 0 0 0 3px rgb(41 182 255 / 22%);
 }
 input[type='checkbox'],
 input[type='radio'] {
@@ -414,7 +424,8 @@ tbody tr:last-child td {
   display: block;
   height: 100%;
   border-radius: inherit;
-  background: linear-gradient(90deg, var(--brand), var(--gold));
+  background: var(--neon);
+  box-shadow: 0 0 12px var(--neon-glow);
   transition: width 0.4s ease;
 }
 
@@ -446,7 +457,7 @@ tbody tr:last-child td {
   border-radius: 6px;
 }
 .prose pre {
-  background: #0a0c12;
+  background: #05070a;
   border: 1px solid var(--line);
   border-radius: var(--radius-sm);
   padding: 1rem;
@@ -536,7 +547,7 @@ tbody tr:last-child td {
 .admin-nav a.active {
   background: var(--surface-2);
   color: var(--text);
-  box-shadow: inset 3px 0 0 var(--brand);
+  box-shadow: inset 3px 0 0 var(--neon);
 }
 @media (max-width: 860px) {
   .admin-layout {

@@ -7,7 +7,7 @@ import { RouterLink } from '@angular/router';
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
     <div class="container empty">
-      <img src="/mascot/spriteThink.png" alt="" />
+      <img src="/mascot/spriteThink.webp" alt="" />
       <h1 class="mono">404</h1>
       <p>Esta página se fue por un café y no volvió.</p>
       <a class="btn" routerLink="/">Volver al inicio</a>

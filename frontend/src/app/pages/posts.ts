@@ -2,6 +2,7 @@ import { ChangeDetectionStrategy, Component, computed, effect, inject, input } f
 import { Title } from '@angular/platform-browser';
 import { Router, RouterLink } from '@angular/router';
 import { ContentApi } from '../core/api';
+import { SITE_NAME, SITE_URL, Seo } from '../core/seo';
 import { PostType } from '../core/models';
 import { ShortDatePipe } from '../shared/format';
 import { loader } from '../shared/loader';
@@ -32,7 +33,7 @@ import { loader } from '../shared/loader';
             </a>
           } @empty {
             <div class="empty">
-              <img src="/mascot/spriteConcentrated.png" alt="" />
+              <img src="/mascot/spriteConcentrated.webp" alt="" />
               <p>Todavía no hay publicaciones. ¡Estamos escribiendo!</p>
             </div>
           }
@@ -115,7 +116,7 @@ export class Posts {
         <div class="prose" [innerHTML]="data.contentHtml"></div>
       } @else if (!post.loading()) {
         <div class="empty">
-          <img src="/mascot/spriteThink.png" alt="" />
+          <img src="/mascot/spriteThink.webp" alt="" />
           <h2>No encontramos esa publicación</h2>
           <a class="btn" routerLink="/blog">Ir al blog</a>
         </div>
@@ -143,6 +144,7 @@ export class Posts {
 export class PostDetailPage {
   private readonly api = inject(ContentApi);
   private readonly title = inject(Title);
+  private readonly seo = inject(Seo);
   readonly slug = input.required<string>();
   protected readonly post = loader(this.slug, (slug) => this.api.post(slug));
 
@@ -150,7 +152,26 @@ export class PostDetailPage {
     effect(() => {
       const data = this.post.value();
       if (data) {
-        this.title.setTitle(`${data.post.title} · Monkey Coffe Dev's`);
+        const post = data.post;
+        const title = `${post.title} · Monkey Coffe Dev's`;
+        this.title.setTitle(title);
+        this.seo.update({
+          title,
+          description: post.excerpt,
+          image: post.coverUrl,
+          type: 'article',
+          jsonLd: {
+            '@type': post.type === 'NEWS' ? 'NewsArticle' : 'Article',
+            headline: post.title,
+            description: post.excerpt,
+            image: post.coverUrl ?? undefined,
+            datePublished: post.publishedAt,
+            inLanguage: 'es',
+            mainEntityOfPage: `${SITE_URL}/publicaciones/${post.slug}`,
+            author: { '@type': 'Person', name: post.authorName },
+            publisher: { '@type': 'Organization', name: SITE_NAME, url: SITE_URL },
+          },
+        });
       }
     });
   }

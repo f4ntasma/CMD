@@ -49,7 +49,7 @@ export class SocialButtons {
   template: `
     <div class="container narrow auth">
       <form class="card" (ngSubmit)="submit()">
-        <img class="mascot" src="/mascot/spriteConcentrated.png" alt="" />
+        <img class="mascot" src="/mascot/spriteConcentrated.webp" alt="" />
         <h1>Ingresar</h1>
         @if (message() || error(); as text) {
           <p class="alert error">{{ text }}</p>
@@ -103,7 +103,7 @@ export class Login {
   template: `
     <div class="container narrow auth">
       <form class="card" (ngSubmit)="submit()">
-        <img class="mascot" src="/mascot/spriteHaveIdea.png" alt="" />
+        <img class="mascot" src="/mascot/spriteHaveIdea.webp" alt="" />
         <h1>Crea tu cuenta</h1>
         @if (message(); as text) {
           <p class="alert error">{{ text }}</p>
@@ -260,7 +260,7 @@ export class ResetPassword {
       <div class="card">
         @switch (status()) {
           @case ('ok') {
-            <img class="mascot" src="/mascot/spriteLaugh.png" alt="" />
+            <img class="mascot" src="/mascot/spriteLaugh.webp" alt="" />
             <h1>¡Correo confirmado!</h1>
             <a class="btn block" routerLink="/cursos">Explorar cursos</a>
           }

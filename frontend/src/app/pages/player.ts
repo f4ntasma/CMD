@@ -100,7 +100,7 @@ import { loader } from '../shared/loader';
           </section>
         } @else if (lesson.error(); as failure) {
           <div class="card empty top">
-            <img src="/mascot/spriteThink.png" alt="" />
+            <img src="/mascot/spriteThink.webp" alt="" />
             @switch (status(failure)) {
               @case (401) {
                 <h2>Inicia sesión para ver esta clase</h2>

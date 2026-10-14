@@ -20,7 +20,7 @@ import { loader } from '../shared/loader';
 
         @if (result(); as outcome) {
           <div class="panel outcome">
-            <img [src]="outcome.passed ? '/mascot/spriteLaugh.png' : '/mascot/spriteThink.png'" alt="" width="120" height="120" />
+            <img [src]="outcome.passed ? '/mascot/spriteLaugh.webp' : '/mascot/spriteThink.webp'" alt="" width="120" height="120" />
             <div>
               <h2>{{ outcome.passed ? '¡Aprobado!' : 'Casi. Inténtalo otra vez' }}</h2>
               <p class="score mono">{{ outcome.score }}%</p>
@@ -63,7 +63,7 @@ import { loader } from '../shared/loader';
         <div class="skeleton top"></div>
       } @else {
         <div class="card empty top">
-          <img src="/mascot/spriteThink.png" alt="" />
+          <img src="/mascot/spriteThink.webp" alt="" />
           <h2>Este cuestionario es para estudiantes inscritos</h2>
           <a class="btn" [routerLink]="['/cursos', slug()]">Ver el curso</a>
         </div>
