@@ -1,0 +1,6 @@
+{
+  "$schema": "https://openapi.vercel.sh/vercel.json",
+  "rewrites": [
+    { "source": "/(.*)", "destination": "http://cmd-web-h0db3t-cb47f3-141-148-68-108.sslip.io/$1" }
+  ]
+}

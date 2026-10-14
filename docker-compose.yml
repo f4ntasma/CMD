@@ -1,0 +1,56 @@
+# Academia completa en local: `docker compose up --build` y abrir http://localhost:4000
+# Requiere un archivo .env (ver .env.example).
+services:
+  db:
+    image: postgres:16-alpine
+    environment:
+      POSTGRES_DB: cmd
+      POSTGRES_USER: cmd
+      POSTGRES_PASSWORD: ${DB_PASSWORD:?defina DB_PASSWORD en .env}
+    volumes:
+      - db-data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U cmd -d cmd"]
+      interval: 5s
+      timeout: 3s
+      retries: 10
+
+  # La API no publica puertos: solo el frontend la alcanza por la red interna.
+  api:
+    build: ./backend/cmd
+    depends_on:
+      db:
+        condition: service_healthy
+    environment:
+      DB_URL: jdbc:postgresql://db:5432/cmd
+      DB_USER: cmd
+      DB_PASSWORD: ${DB_PASSWORD}
+      APP_BASE_URL: ${APP_BASE_URL:-http://localhost:4000}
+      APP_ADMIN_EMAIL: ${APP_ADMIN_EMAIL:?defina APP_ADMIN_EMAIL en .env}
+      APP_ADMIN_PASSWORD: ${APP_ADMIN_PASSWORD:?defina APP_ADMIN_PASSWORD en .env}
+      SESSION_COOKIE_SECURE: ${SESSION_COOKIE_SECURE:-false}
+      MAIL_HOST: ${MAIL_HOST:-}
+      MAIL_PORT: ${MAIL_PORT:-587}
+      MAIL_USER: ${MAIL_USER:-}
+      MAIL_PASSWORD: ${MAIL_PASSWORD:-}
+      MAIL_FROM: ${MAIL_FROM:-no-reply@monkeycoffedevs.local}
+      GOOGLE_CLIENT_ID: ${GOOGLE_CLIENT_ID:-}
+      GOOGLE_CLIENT_SECRET: ${GOOGLE_CLIENT_SECRET:-}
+      GITHUB_CLIENT_ID: ${GITHUB_CLIENT_ID:-}
+      GITHUB_CLIENT_SECRET: ${GITHUB_CLIENT_SECRET:-}
+      DISCORD_CLIENT_ID: ${DISCORD_CLIENT_ID:-}
+      DISCORD_CLIENT_SECRET: ${DISCORD_CLIENT_SECRET:-}
+
+  web:
+    build: ./frontend
+    depends_on:
+      - api
+    environment:
+      API_URL: http://api:8080
+      # Dominios desde los que se sirve el sitio (separados por comas).
+      NG_ALLOWED_HOSTS: ${SITE_HOSTS:-localhost}
+    ports:
+      - "4000:4000"
+
+volumes:
+  db-data:
