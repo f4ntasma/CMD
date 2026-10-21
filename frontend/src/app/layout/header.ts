@@ -12,7 +12,7 @@ import { Icon } from '../shared/icon';
     <header class="bar">
       <div class="container inner">
         <a class="brand" routerLink="/" (click)="open.set(false)">
-          <span class="logo"><img src="/mascot/spriteCool.webp" alt="" width="944" height="950" /></span>
+          <span class="logo"><img src="/logo.webp" alt="" width="512" height="435" /></span>
           <span>Monkey Coffe <strong>Dev's</strong></span>
         </a>
 
@@ -84,9 +84,13 @@ import { Icon } from '../shared/icon';
       display: grid;
       place-items: center;
     }
+    .logo {
+      display: grid;
+      place-items: center;
+    }
     .logo img {
-      width: 52px;
-      margin-top: 12px;
+      width: 32px;
+      height: auto;
     }
     .brand strong {
       color: var(--brand-strong);

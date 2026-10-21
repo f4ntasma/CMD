@@ -36,7 +36,7 @@ const SOCIAL_ICONS: Record<string, IconName> = { Discord: 'message', YouTube: 'v
       </div>
       <div class="hero-art">
         <div class="orb" aria-hidden="true"></div>
-        <img class="float mascot" src="/mascot/spriteCool.webp" width="944" height="950" fetchpriority="high"
+        <img class="float mascot" src="/mascot/spriteCool.webp" width="591" height="640" fetchpriority="high"
              alt="Mascota de Monkey Coffe Dev's: un mono rojo con lentes oscuros y una taza de café" />
         <div class="code-card mono" aria-hidden="true">
           <div class="dots"><span></span><span></span><span></span></div>
@@ -72,7 +72,7 @@ const SOCIAL_ICONS: Record<string, IconName> = { Discord: 'message', YouTube: 'v
     <!-- Cómo funciona -->
     <section class="container section">
       <div class="how">
-        <img src="/mascot/spriteConcentrated.webp" width="1072" height="884" loading="lazy"
+        <img src="/mascot/spriteConcentrated.webp" width="640" height="541" loading="lazy"
              alt="La mascota concentrada programando en su laptop" />
         <div class="how-copy">
           <span class="eyebrow dark">Cómo funciona</span>
@@ -117,7 +117,7 @@ const SOCIAL_ICONS: Record<string, IconName> = { Discord: 'message', YouTube: 'v
     @if (paths().length > 0) {
       <section class="container section">
         <div class="paths">
-          <img src="/mascot/spriteHaveIdea.webp" width="898" height="986" loading="lazy"
+          <img src="/mascot/spriteHaveIdea.webp" width="578" height="640" loading="lazy"
                alt="La mascota con una idea, señalando hacia arriba junto a un foco encendido" />
           <div>
             <span class="eyebrow">Rutas de aprendizaje</span>
@@ -178,7 +178,7 @@ const SOCIAL_ICONS: Record<string, IconName> = { Discord: 'message', YouTube: 'v
             }
           </div>
         </div>
-        <img src="/mascot/spriteLaugh.webp" width="936" height="944" loading="lazy" alt="La mascota riéndose a carcajadas" />
+        <img src="/mascot/spriteLaugh.webp" width="640" height="626" loading="lazy" alt="La mascota riéndose, con su café en la cola" />
       </div>
     </section>
 
@@ -205,7 +205,7 @@ const SOCIAL_ICONS: Record<string, IconName> = { Discord: 'message', YouTube: 'v
     <!-- Llamado final -->
     <section class="container section">
       <div class="final">
-        <img src="/mascot/spriteThink.webp" width="866" height="1090" loading="lazy" alt="La mascota pensando, con la mano en la barbilla" />
+        <img src="/mascot/spriteThink.webp" width="498" height="640" loading="lazy" alt="La mascota pensando, con la mano en la barbilla" />
         <div class="final-copy">
           <h2>¿Listo para tu primera línea de código?</h2>
           <p>Crea tu cuenta gratis y empieza hoy, con café o sin él.</p>

@@ -108,7 +108,7 @@ export const ORGANIZATION_JSON_LD = {
   '@type': 'EducationalOrganization',
   name: SITE_NAME,
   url: SITE_URL,
-  logo: `${SITE_URL}/mascot/spriteCool.webp`,
+  logo: `${SITE_URL}/logo.png`,
   description: DEFAULT_DESCRIPTION,
   inLanguage: 'es',
 };
